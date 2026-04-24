@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sitdown/constants/app_colors.dart';
 import 'package:sitdown/widgets/searchpage/search_header.dart';
+import 'package:sitdown/widgets/searchpage/search_body.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -20,7 +21,7 @@ class _MySearchPageState extends State<SearchPage> {
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.all(16),
-            child: Column(children: [SearchHeader()]),
+            child: Column(children: [SearchHeader(), SearchBody()]),
           ),
         ),
       ),
