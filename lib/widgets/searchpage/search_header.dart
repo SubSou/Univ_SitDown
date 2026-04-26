@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sitdown/constants/app_colors.dart';
+import 'package:sitdown/widgets/common/CategoryList.dart';
 
 class SearchHeader extends StatefulWidget {
   const SearchHeader({super.key});
@@ -66,33 +67,14 @@ class _SearchHeader extends State<SearchHeader> {
         ),
         Container(
           margin: EdgeInsets.only(top: 10),
-          child: Row(
-            children: List.generate(categoryList.length, (index) {
-              bool isSelected = selectedIndex == index;
-
-              return GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selectedIndex = index;
-                  });
-                },
-                child: Container(
-                  margin: EdgeInsets.only(right: 8),
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: isSelected ? primaryColor : Colors.grey[200], // 배경색
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Text(
-                    categoryList[index]["name"],
-                    style: TextStyle(
-                      color: isSelected ? whiteColor : blackColor, // 글자색
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              );
-            }),
+          child: CategoryList(
+            categoryList: categoryList,
+            selectedIndex: selectedIndex,
+            onTap: (index) {
+              setState(() {
+                selectedIndex = index;
+              });
+            },
           ),
         ),
       ],

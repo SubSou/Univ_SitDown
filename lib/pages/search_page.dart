@@ -11,8 +11,6 @@ class SearchPage extends StatefulWidget {
 }
 
 class _MySearchPageState extends State<SearchPage> {
-  int currentIndex = 0;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -3,6 +3,8 @@ import 'package:sitdown/pages/home_page.dart';
 import 'package:sitdown/pages/search_page.dart';
 import 'package:sitdown/pages/reservation_page.dart';
 import 'package:sitdown/constants/app_colors.dart';
+import 'package:sitdown/pages/notification_page.dart';
+import 'package:sitdown/pages/my_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -15,23 +17,17 @@ class _MyMainPageState extends State<MainPage> {
   int currentIndex = 0;
 
   void onTapBottomItem(int index) {
-    if (index == 0 || index == 1) {
-      setState(() {
-        currentIndex = index;
-      });
-    } else if (index == 2) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => ReservationPage()),
-      );
-    }
+    setState(() {
+      currentIndex = index;
+    });
   }
 
   final List<Widget> NavPages = [
     const HomePage(),
     const SearchPage(),
-
-    // const MyPage(),
+    const ReservationPage(),
+    const NotificationPage(),
+    const MyPage(),
   ];
 
   @override
