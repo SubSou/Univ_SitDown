@@ -16,7 +16,7 @@ class _MyInfoPageState extends State<MyInfoPage> {
     return Scaffold(
       backgroundColor: whiteColor,
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

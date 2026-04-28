@@ -3,10 +3,15 @@ import 'package:sitdown/constants/app_colors.dart';
 
 class MyInfoItem extends StatelessWidget {
   final String mainTitle;
-  final String subTitle;
+  final TextEditingController controller;
+  final bool enabled;
 
-  const MyInfoItem({Key? key, required this.mainTitle, required this.subTitle})
-    : super(key: key);
+  const MyInfoItem({
+    Key? key,
+    required this.mainTitle,
+    required this.controller,
+    this.enabled = true,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,10 +20,22 @@ class MyInfoItem extends StatelessWidget {
         Container(
           margin: EdgeInsets.only(top: 15),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(mainTitle, style: TextStyle(fontWeight: FontWeight.bold)),
-              Text(subTitle),
+              SizedBox(
+                width: 80,
+                child: Text(
+                  mainTitle,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+              Expanded(
+                child: TextField(
+                  controller: controller, // ⭐ 부모에서 받은 값
+                  enabled: enabled,
+                  textAlign: TextAlign.right,
+                  decoration: InputDecoration(border: InputBorder.none),
+                ),
+              ),
             ],
           ),
         ),

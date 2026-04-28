@@ -15,71 +15,93 @@ class MyInfoBody extends StatefulWidget {
 class _MyInfoBodyState extends State<MyInfoBody> {
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            ProFileCircle(),
-            SizedBox(height: 12),
-            Material(
-              color: Colors.transparent,
-              child: InkWell(
-                borderRadius: BorderRadius.circular(8),
-                onTap: () {
-                  print("클릭");
-                },
-                child: Ink(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 14,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFEAF2FF),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: const Text(
-                    "프로필 사진 변경",
-                    style: TextStyle(
-                      color: Color(0xFF3F7FEA),
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700,
-                    ),
+    final nameController = TextEditingController(text: "김학생"); // 이름
+    final idController = TextEditingController(text: "stduent1234"); // 아이디
+    final emailController = TextEditingController(
+      text: "student@univ.com",
+    ); // 이메일
+    final phoneController = TextEditingController(
+      text: "010-1234-5678",
+    ); // 전화번호
+    final affiliationController = TextEditingController(text: "학생"); // 소속
+
+    return Container(
+      width: double.infinity,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          ProFileCircle(),
+          SizedBox(height: 12),
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(8),
+              onTap: () {
+                print("클릭");
+              },
+              child: Ink(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 6,
+                ),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFEAF2FF),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Text(
+                  "프로필 사진 변경",
+                  style: TextStyle(
+                    color: Color(0xFF3F7FEA),
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
               ),
             ),
+          ),
 
-            Container(
-              margin: EdgeInsets.only(top: 20),
+          Container(
+            margin: EdgeInsets.only(top: 20),
 
-              child: Container(
-                padding: EdgeInsets.only(left: 150, right: 150),
-                child: Column(
-                  children: [
-                    MyInfoItem(mainTitle: "이름", subTitle: "lee"),
-                    MyInfoItem(mainTitle: "이름", subTitle: "lee"),
-                    MyInfoItem(mainTitle: "이름", subTitle: "lee"),
-                    MyInfoItem(mainTitle: "이름", subTitle: "lee"),
-                    MyInfoItem(mainTitle: "이름", subTitle: "lee"),
-                    Container(
-                      child: Material(
-                        child: InkWell(
-                          onTap: () {
-                            print("123");
-                          },
-                          child: Text("data"),
+            child: Container(
+              padding: EdgeInsets.only(left: 100, right: 100),
+              child: Column(
+                children: [
+                  MyInfoItem(mainTitle: "이름", controller: nameController),
+                  MyInfoItem(mainTitle: "아이디", controller: idController),
+                  MyInfoItem(mainTitle: "이메일", controller: emailController),
+                  MyInfoItem(mainTitle: "전화번호", controller: phoneController),
+                  MyInfoItem(
+                    mainTitle: "소속",
+                    controller: affiliationController,
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 20),
+                    width: double.infinity,
+                    height: 50,
+
+                    child: Material(
+                      color: primaryColor,
+                      borderRadius: BorderRadius.circular(10),
+                      child: InkWell(
+                        onTap: () {
+                          print("123");
+                        },
+                        child: Center(
+                          child: Text(
+                            "수정하기",
+                            style: TextStyle(color: whiteColor),
+                          ),
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -17,7 +17,12 @@ class _MyReservationPageState extends State<MyReservationPage> {
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.all(16),
-          child: Column(children: [chevron_left(onTap: () {})]),
+          child: Column(
+            children: [
+              chevron_left(onTap: () {}),
+              Text("data"),
+            ],
+          ),
         ),
       ),
     );
