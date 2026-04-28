@@ -10,6 +10,10 @@ class MyFavoritePage extends StatefulWidget {
 }
 
 class _MyFavoritePageState extends State<MyFavoritePage> {
+  void goBack() {
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +21,7 @@ class _MyFavoritePageState extends State<MyFavoritePage> {
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.all(16),
-          child: Column(children: [chevron_left(onTap: () {})]),
+          child: Column(children: [chevron_left(onTap: goBack)]),
         ),
       ),
     );

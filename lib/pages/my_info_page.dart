@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sitdown/constants/app_colors.dart';
 import 'package:sitdown/widgets/common/chevron_left.dart';
+import 'package:sitdown/util/navigation_util.dart';
 
 class MyInfoPage extends StatefulWidget {
   const MyInfoPage({Key? key}) : super(key: key);
@@ -17,7 +18,16 @@ class _MyInfoPageState extends State<MyInfoPage> {
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.all(16),
-          child: Column(children: [chevron_left(onTap: () {})]),
+          child: Column(
+            children: [
+              chevron_left(
+                onTap: () {
+                  NavUtil.pop(context);
+                },
+              ),
+              Expanded(child: Container(color: Colors.black)),
+            ],
+          ),
         ),
       ),
     );
