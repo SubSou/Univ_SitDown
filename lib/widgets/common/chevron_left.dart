@@ -7,9 +7,11 @@ class chevron_left extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(child: Icon(Icons.chevron_left)),
+    return Container(
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(child: Icon(Icons.chevron_left)),
+      ),
     );
   }
 }
