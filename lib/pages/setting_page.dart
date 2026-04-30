@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sitdown/constants/app_colors.dart';
 import 'package:sitdown/widgets/common/chevron_left.dart';
+import 'package:sitdown/widgets/setting/setting_body.dart';
+import 'package:sitdown/widgets/setting/setting_header.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({Key? key}) : super(key: key);
@@ -17,7 +19,10 @@ class _SettingPageState extends State<SettingPage> {
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.all(16),
-          child: Column(children: [chevron_left(onTap: () {})]),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [SettingHeader(), SettingBody()],
+          ),
         ),
       ),
     );

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sitdown/pages/SettingPage.dart';
-import 'package:sitdown/pages/appInfo_page.dart';
+import 'package:sitdown/pages/setting_page.dart';
 import 'package:sitdown/pages/my_favorite_page.dart';
 import 'package:sitdown/pages/my_info_page.dart';
-import 'package:sitdown/pages/my_reservation_page.dart';
 import 'package:sitdown/pages/my_stats_page.dart';
 import 'package:sitdown/pages/notice_page.dart';
 

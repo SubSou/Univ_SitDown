@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sitdown/constants/app_colors.dart';
+import 'package:sitdown/widgets/myfavoritepage/my_favorite_body_item.dart';
 
 class MyFavoriteBody extends StatefulWidget {
   final List<Map<String, dynamic>> favoriteSeatList;
@@ -29,54 +30,9 @@ class _MyFavoriteBodyState extends State<MyFavoriteBody> {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: whiteColor,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Color(0xFFE5E5E5)),
-              boxShadow: [
-                BoxShadow(
-                  color: blackColor.withOpacity(0.03),
-                  blurRadius: 8,
-                  offset: Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Icon(Icons.account_balance, color: primaryColor, size: 15),
-                    Container(
-                      margin: EdgeInsets.only(left: 10),
-                      child: Text(
-                        "제1열람실 (3층)",
-                        style: TextStyle(
-                          color: primaryColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "A-12",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Icon(Icons.chevron_right),
-                  ],
-                ),
-              ],
-            ),
-          ),
+          ...widget.favoriteSeatList.map((item) {
+            return MyFavoriteBodyItem(item: item);
+          }).toList(),
         ],
       ),
     );

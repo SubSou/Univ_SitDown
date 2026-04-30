@@ -9,3 +9,4 @@ const greenStatusColor = Color(0xFFE6F4EA);
 const greenLightColor = Color(0xFF34A853);
 const greyColor = Color(0xFFF5F5F5);
 const cacleColor = Color(0xFFFF6B6B);
+const subTextColor = Color(0xFF6B7280);
