@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -8,7 +10,7 @@ import 'package:sitdown/widgets/common/profilecircle.dart';
 import 'package:sitdown/widgets/myinfo/my_info_item.dart';
 
 class MyInfoBody extends StatefulWidget {
-  const MyInfoBody({Key? key}) : super(key: key);
+  const MyInfoBody({super.key});
 
   @override
   State<MyInfoBody> createState() => _MyInfoBodyState();
@@ -23,6 +25,8 @@ class _MyInfoBodyState extends State<MyInfoBody> {
   final ImagePicker picker = ImagePicker();
 
   XFile? selectedImage;
+  Uint8List? selectedImageBytes;
+
   bool isLoading = false;
 
   @override
@@ -75,14 +79,13 @@ class _MyInfoBodyState extends State<MyInfoBody> {
 
       if (image == null) return;
 
+      final Uint8List bytes = await image.readAsBytes();
+
       setState(() {
         selectedImage = image;
+        selectedImageBytes = bytes;
       });
-
-      print("선택한 이미지 경로: ${image.path}");
     } catch (e) {
-      print("이미지 선택 에러: $e");
-
       if (!mounted) return;
 
       ScaffoldMessenger.of(
@@ -106,8 +109,6 @@ class _MyInfoBodyState extends State<MyInfoBody> {
         isLoading = true;
       });
 
-      print("1. 기본 정보 수정 시작");
-
       final updatedUser = await UserApi.updateMyInfo(
         accessToken: accessToken,
         name: nameController.text.trim(),
@@ -115,17 +116,16 @@ class _MyInfoBodyState extends State<MyInfoBody> {
         affiliation: convertAffiliation(affiliationController.text),
       );
 
-      print("2. 기본 정보 수정 완료");
+      context.read<AuthProvider>().setMyInfo(updatedUser);
 
-      if (selectedImage != null) {
-        print("3. 이미지 업로드 시작");
-
+      if (selectedImage != null && selectedImageBytes != null) {
+        final path = selectedImage!.path;
+        //final pureUrl = path.replaceFirst('blob:', '');
+        //print(pureUrl);
         final uploadedUser = await UserApi.uploadProfileImage(
           accessToken: accessToken,
-          imageFile: selectedImage!,
+          imageFile: path,
         );
-
-        print("4. 이미지 업로드 완료");
 
         context.read<AuthProvider>().setMyInfo(uploadedUser);
       }
@@ -136,8 +136,6 @@ class _MyInfoBodyState extends State<MyInfoBody> {
         context,
       ).showSnackBar(const SnackBar(content: Text("회원정보가 수정되었습니다.")));
     } catch (e) {
-      print("회원정보 수정 에러: $e");
-
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -153,10 +151,10 @@ class _MyInfoBodyState extends State<MyInfoBody> {
   }
 
   Widget buildProfileImage() {
-    if (selectedImage != null) {
+    if (selectedImageBytes != null) {
       return ClipOval(
-        child: Image.network(
-          selectedImage!.path,
+        child: Image.memory(
+          selectedImageBytes!,
           width: 54,
           height: 54,
           fit: BoxFit.cover,
@@ -238,7 +236,10 @@ class _MyInfoBodyState extends State<MyInfoBody> {
                                 color: whiteColor,
                                 strokeWidth: 2,
                               )
-                            : Text("수정하기", style: TextStyle(color: whiteColor)),
+                            : const Text(
+                                "수정하기",
+                                style: TextStyle(color: whiteColor),
+                              ),
                       ),
                     ),
                   ),

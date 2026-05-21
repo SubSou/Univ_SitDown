@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:sitdown/constants/api_url.dart';
+import 'dart:typed_data';
 
 class ApiException implements Exception {
   final int statusCode;
@@ -122,28 +123,27 @@ class ApiClient {
   static Future<dynamic> uploadFile(
     String path, {
     required String accessToken,
-    required XFile file,
-    String fileFieldName = 'image',
-    Map<String, String>? fields,
+    required String filePath,
+    String fileFieldName = 'file',
   }) async {
     final request = http.MultipartRequest('POST', uri(path));
 
     request.headers['Authorization'] = 'Bearer $accessToken';
+
     request.headers['Accept'] = 'application/json';
 
-    if (fields != null) {
-      request.fields.addAll(fields);
-    }
+    final xFile = XFile(filePath);
 
-    final bytes = await file.readAsBytes();
+    final bytes = await xFile.readAsBytes();
 
     request.files.add(
-      http.MultipartFile.fromBytes(fileFieldName, bytes, filename: file.name),
+      http.MultipartFile.fromBytes(fileFieldName, bytes, filename: xFile.name),
     );
 
     final streamedResponse = await request.send().timeout(timeout);
-    final response = await http.Response.fromStream(streamedResponse);
 
+    final response = await http.Response.fromStream(streamedResponse);
+    print(response.body);
     return _handleResponse(response);
   }
 

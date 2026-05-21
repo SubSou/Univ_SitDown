@@ -42,6 +42,8 @@ class _SpaceDetailPageState extends State<SpaceDetailPage> {
         spaceId: widget.spaceId,
       );
 
+      print(response);
+
       setState(() {
         space = response;
         isLoading = false;

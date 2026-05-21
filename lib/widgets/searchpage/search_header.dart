@@ -17,19 +17,20 @@ class _SearchHeader extends State<SearchHeader> {
   int selectedIndex = 0;
 
   final List<Map<String, dynamic>> categoryList = [
-    {"id": 0, "name": "전체"},
-    {"id": 1, "name": "열람실"},
-    {"id": 2, "name": "스터디룸"},
-    {"id": 3, "name": "PC실"},
+    {"id": 0, "name": "전체", "value": null},
+    {"id": 1, "name": "열람실", "value": "READING_ROOM"},
+    {"id": 2, "name": "스터디룸", "value": "STUDY_ROOM"},
+    {"id": 3, "name": "PC실", "value": "PC_ROOM"},
+    {"id": 4, "name": "강의실", "value": "LECTURE_ROOM"},
   ];
 
   void submitSearch() {
     final keyword = controller.text.trim();
 
-    final selectedName = categoryList[selectedIndex]["name"];
+    final selectedValue = categoryList[selectedIndex]["value"];
 
     widget.onSearch(
-      category: selectedIndex == 0 ? null : selectedName,
+      category: selectedValue,
       searchKeyword: keyword.isEmpty ? null : keyword,
     );
   }

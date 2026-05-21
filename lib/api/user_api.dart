@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:sitdown/api/api_client.dart';
 
@@ -25,8 +27,6 @@ class UserApi {
         'affiliation': affiliation.trim(),
     };
 
-    print("회원정보 수정 요청 body: $body");
-
     final data = await ApiClient.patch(
       '/users/me',
       accessToken: accessToken,
@@ -39,13 +39,12 @@ class UserApi {
   /// 프로필 사진 업로드
   static Future<Map<String, dynamic>> uploadProfileImage({
     required String accessToken,
-    required XFile imageFile,
+    required String imageFile,
   }) async {
     final data = await ApiClient.uploadFile(
       '/users/me/profile-image',
       accessToken: accessToken,
-      file: imageFile,
-      fileFieldName: 'image',
+      filePath: imageFile,
     );
 
     return Map<String, dynamic>.from(data);

@@ -6,11 +6,27 @@ import 'package:sitdown/providers/auth_provider.dart';
 class ProFileCircle extends StatelessWidget {
   const ProFileCircle({super.key});
 
+  String getProfileImageUrl(String rawUrl) {
+    if (rawUrl.isEmpty) return '';
+
+    if (rawUrl.startsWith('http://') || rawUrl.startsWith('https://')) {
+      return rawUrl;
+    }
+
+    if (rawUrl.startsWith('/')) {
+      return 'http://sitdown.bond$rawUrl';
+    }
+
+    return 'http://sitdown.bond/$rawUrl';
+  }
+
   @override
   Widget build(BuildContext context) {
     final myInfo = context.watch<AuthProvider>().myInfo;
 
-    final profileImageUrl = myInfo?['profileImageUrl']?.toString() ?? '';
+    final rawProfileImageUrl = myInfo?['profileImageUrl']?.toString() ?? '';
+
+    final profileImageUrl = getProfileImageUrl(rawProfileImageUrl);
 
     final hasImage = profileImageUrl.isNotEmpty;
 
@@ -25,21 +41,13 @@ class ProFileCircle extends StatelessWidget {
         child: hasImage
             ? Image.network(
                 profileImageUrl,
+                width: 54,
+                height: 54,
                 fit: BoxFit.cover,
-
-                /// 🔵 로딩 중
-                loadingBuilder: (context, child, progress) {
-                  if (progress == null) {
-                    return child;
-                  }
-
-                  return const Center(
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  );
-                },
-
-                /// 🔵 이미지 실패 시 기본 아이콘
                 errorBuilder: (context, error, stackTrace) {
+                  debugPrint('이미지 로드 실패: $error');
+                  debugPrint('이미지 URL: $profileImageUrl');
+
                   return Icon(
                     Icons.person_outline,
                     color: primaryColor,
@@ -47,7 +55,6 @@ class ProFileCircle extends StatelessWidget {
                   );
                 },
               )
-            /// 🔵 이미지 없을 때 기본 프로필
             : Icon(Icons.person_outline, color: primaryColor, size: 40),
       ),
     );

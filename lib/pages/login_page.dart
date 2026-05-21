@@ -61,8 +61,6 @@ class _LoginPageState extends State<LoginPage> {
 
       final data = await AuthApi.login(email: email, password: password);
 
-      debugPrint('로그인 응답값: $data');
-
       if (!mounted) return;
 
       context.read<AuthProvider>().loginFromJson(data);
