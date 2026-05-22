@@ -11,11 +11,7 @@ class RsvApi {
     final data = await ApiClient.post(
       '/reservations',
       accessToken: accessToken,
-      body: {
-        'seatId': seatId,
-        'startAt': startAt,
-        'endAt': endAt,
-      },
+      body: {'seatId': seatId, 'startAt': startAt, 'endAt': endAt},
     );
 
     return Map<String, dynamic>.from(data);
@@ -39,7 +35,15 @@ class RsvApi {
       },
     );
 
-    return Map<String, dynamic>.from(data);
+    if (data is Map<String, dynamic>) {
+      return data;
+    }
+
+    if (data is Map) {
+      return Map<String, dynamic>.from(data);
+    }
+
+    throw Exception('예약 목록 응답 형식이 올바르지 않습니다.');
   }
 
   /// [RSV-03] 예약 상세 조회

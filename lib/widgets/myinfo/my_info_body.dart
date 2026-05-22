@@ -50,6 +50,8 @@ class _MyInfoBodyState extends State<MyInfoBody> {
     phoneController.text = myInfo?['phone']?.toString() ?? '';
     affiliationController.text =
         myInfo?['affiliation']?.toString() ?? 'UNDERGRADUATE';
+
+    print(myInfo?['affiliation']);
   }
 
   String convertAffiliation(String value) {
