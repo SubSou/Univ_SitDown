@@ -83,7 +83,6 @@ class _SearchBody extends State<SearchBody> {
     }
 
     try {
-      print(widget.category);
       final response = await SpaceApi.getSpaces(
         accessToken: accessToken,
         category: widget.category,
@@ -91,7 +90,6 @@ class _SearchBody extends State<SearchBody> {
         page: page,
         size: size,
       );
-      print(response);
       final dynamic rawList = response['content'] ?? [];
 
       List<Map<String, dynamic>> newList = [];
