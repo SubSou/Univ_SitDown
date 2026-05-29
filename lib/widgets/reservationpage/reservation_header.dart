@@ -1,46 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:sitdown/constants/app_colors.dart';
 
-const primaryColor = Color(0xFF104FCF);
+class ReservationHeader extends StatelessWidget {
+  final String selectedStatus;
+  final void Function(String status) onChanged;
 
-class ReservationHeader extends StatefulWidget {
-  const ReservationHeader({super.key});
-
-  @override
-  State<ReservationHeader> createState() => _ReservationHeaderState();
-}
-
-class _ReservationHeaderState extends State<ReservationHeader> {
-  int selectedIndex = 0;
-
-  final tabs = ["진행 중", "지난 예약", "취소 내역"];
+  const ReservationHeader({
+    super.key,
+    required this.selectedStatus,
+    required this.onChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final tabs = [
+      {'title': '진행 중', 'status': 'ACTIVE'},
+      {'title': '지난 예약', 'status': 'PAST'},
+      {'title': '취소 내역', 'status': 'CANCELED'},
+    ];
+
     return SizedBox(
       height: 64,
       child: Row(
-        children: tabs.asMap().entries.map((entry) {
-          final index = entry.key;
-          final text = entry.value;
-          final isSelected = selectedIndex == index;
+        children: tabs.map((tab) {
+          final title = tab['title']!;
+          final status = tab['status']!;
+          final isSelected = selectedStatus == status;
 
           return Expanded(
             child: InkWell(
               onTap: () {
-                setState(() {
-                  selectedIndex = index;
-                });
+                onChanged(status);
               },
               child: Column(
                 children: [
                   Expanded(
                     child: Center(
                       child: Text(
-                        text,
+                        title,
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: isSelected
-                              ? FontWeight.bold
+                              ? FontWeight.w800
                               : FontWeight.w500,
                           color: isSelected
                               ? primaryColor
@@ -49,14 +50,10 @@ class _ReservationHeaderState extends State<ReservationHeader> {
                       ),
                     ),
                   ),
-
-                  // 🔥 높이 고정 (핵심)
                   Container(
                     height: 4,
                     width: double.infinity,
-                    color: isSelected
-                        ? primaryColor
-                        : const Color(0xFFE5E7EB), // 회색 라인 유지
+                    color: isSelected ? primaryColor : const Color(0xFFE5E7EB),
                   ),
                 ],
               ),

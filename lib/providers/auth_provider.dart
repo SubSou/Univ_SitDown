@@ -10,6 +10,15 @@ class AuthProvider extends ChangeNotifier {
   String? _refreshToken;
   int? _accessTokenExpiresIn;
 
+  Map<String, dynamic>? _selectedSpaceDetail;
+
+  Map<String, dynamic>? get selectedSpaceDetail => _selectedSpaceDetail;
+
+  void setSelectedSpaceDetail(Map<String, dynamic> data) {
+    _selectedSpaceDetail = data;
+    notifyListeners();
+  }
+
   Map<String, dynamic>? _myInfo;
   List<dynamic> _reservationList = [];
 
@@ -40,10 +49,7 @@ class AuthProvider extends ChangeNotifier {
   }
 
   /// 로그인 API 실제 호출
-  Future<void> login({
-    required String email,
-    required String password,
-  }) async {
+  Future<void> login({required String email, required String password}) async {
     final data = await AuthApi.login(email: email, password: password);
     loginFromJson(data);
   }

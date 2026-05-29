@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:sitdown/api/space_api.dart';
 import 'package:sitdown/constants/app_colors.dart';
 import 'package:sitdown/providers/auth_provider.dart';
+import 'package:sitdown/api/seat_api.dart';
+import 'package:sitdown/pages/seat_select_page.dart';
 
 class SpaceDetailPage extends StatefulWidget {
   final String spaceId;
@@ -45,12 +47,17 @@ class _SpaceDetailPageState extends State<SpaceDetailPage> {
         spaceId: widget.spaceId,
       );
 
-      print(detailResponse);
-
       final congestionResponse = await SpaceApi.getCongestion(
         accessToken: accessToken,
         spaceId: widget.spaceId,
       );
+
+      final seatResponse = await SeatApi.getSeats(
+        accessToken: accessToken,
+        spaceId: widget.spaceId,
+      );
+
+      context.read<AuthProvider>().setSelectedSpaceDetail(detailResponse);
 
       setState(() {
         space = detailResponse;
@@ -68,7 +75,6 @@ class _SpaceDetailPageState extends State<SpaceDetailPage> {
   }
 
   Future<void> toggleFavorite() async {
-    print("호출");
     final accessToken = context.read<AuthProvider>().accessToken;
 
     if (accessToken == null || accessToken.isEmpty) {
@@ -176,8 +182,19 @@ class _SpaceDetailPageState extends State<SpaceDetailPage> {
   }
 
   void goSeatSelect() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('좌석 선택 페이지 연결은 다음 단계에서 진행하면 됩니다.')),
+    final name = space?['name']?.toString() ?? '';
+
+    final floor = int.tryParse(space?['floor']?.toString() ?? '');
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => SeatSelectPage(
+          spaceId: widget.spaceId,
+          spaceName: name,
+          floor: floor,
+        ),
+      ),
     );
   }
 

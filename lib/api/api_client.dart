@@ -143,7 +143,6 @@ class ApiClient {
     final streamedResponse = await request.send().timeout(timeout);
 
     final response = await http.Response.fromStream(streamedResponse);
-    print(response.body);
     return _handleResponse(response);
   }
 
