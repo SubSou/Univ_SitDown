@@ -35,11 +35,6 @@ class _MyBodyState extends State<MyBody> {
       "icon": Icons.campaign_outlined,
       "page": const NoticePage(),
     },
-    {
-      "title": "설정",
-      "icon": Icons.settings_outlined,
-      "page": const SettingPage(),
-    },
     {"title": "앱 정보", "icon": Icons.info_outline, "page": const AppInfoPage()},
     {"title": "로그아웃", "icon": Icons.logout, "page": const LogoutConfirmPage()},
   ];

@@ -101,7 +101,7 @@ class _SignupPageState extends State<SignupPage> {
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString().replaceAll('Exception: ', ''))),
+        SnackBar(content: Text("회원가입 중 에러가 발생 했습니다. 잠시 후 다시 실행해 주세요.")),
       );
     } finally {
       if (mounted) {

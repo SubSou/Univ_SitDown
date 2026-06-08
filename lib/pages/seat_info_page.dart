@@ -202,7 +202,7 @@ class _SeatInfoPageState extends State<SeatInfoPage> {
             ? const Center(
                 child: CircularProgressIndicator(color: primaryColor),
               )
-            : Padding(
+            : SingleChildScrollView(
                 padding: const EdgeInsets.fromLTRB(32, 52, 32, 28),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -308,7 +308,7 @@ class _SeatInfoPageState extends State<SeatInfoPage> {
                         ],
                       ),
                     ),
-                    const Spacer(),
+                    const SizedBox(height: 32),
                     SizedBox(
                       width: double.infinity,
                       height: 58,

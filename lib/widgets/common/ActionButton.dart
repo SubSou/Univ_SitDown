@@ -4,7 +4,7 @@ class ActionButton extends StatelessWidget {
   final String text;
   final Color borderColor;
   final Color textColor;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   const ActionButton({
     super.key,
@@ -14,8 +14,10 @@ class ActionButton extends StatelessWidget {
     required this.onPressed,
   });
 
+  @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return SizedBox(
+      height: 44,
       child: OutlinedButton(
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(

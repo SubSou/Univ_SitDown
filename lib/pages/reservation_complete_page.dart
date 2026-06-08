@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sitdown/constants/app_colors.dart';
+import 'package:sitdown/pages/main_page.dart';
 
 class ReservationCompletePage extends StatelessWidget {
   final Map<String, dynamic> reservation;
@@ -142,7 +143,11 @@ class ReservationCompletePage extends StatelessWidget {
                 height: 58,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.popUntil(context, (route) => route.isFirst);
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (_) => const MainPage()),
+                      (route) => false,
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: primaryColor,

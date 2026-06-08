@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:fl_chart/fl_chart.dart';
@@ -6,8 +7,132 @@ import 'package:provider/provider.dart';
 import 'package:sitdown/constants/app_colors.dart';
 import 'package:sitdown/providers/auth_provider.dart';
 
-class HomeBody extends StatelessWidget {
+class HomeBody extends StatefulWidget {
   const HomeBody({super.key});
+
+  @override
+  State<HomeBody> createState() => _HomeBodyState();
+}
+
+class _HomeBodyState extends State<HomeBody> {
+  Timer? timer;
+  int remainingSeconds = 0;
+  String? reservationId;
+  String? reservationEndAt;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setReservationTimer();
+    });
+  }
+
+  void setReservationTimer() {
+    final reservationList = context.read<AuthProvider>().reservationList;
+
+    if (reservationList.isEmpty) {
+      timer?.cancel();
+      remainingSeconds = 0;
+      reservationId = null;
+      reservationEndAt = null;
+      return;
+    }
+
+    final reservation = reservationList.first;
+
+    reservationId = reservation['id']?.toString();
+    reservationEndAt = reservation['endAt']?.toString();
+
+    remainingSeconds =
+        int.tryParse(reservation['remainingSeconds']?.toString() ?? '0') ?? 0;
+
+    startTimer();
+  }
+
+  void startTimer() {
+    timer?.cancel();
+
+    if (remainingSeconds <= 0) return;
+
+    timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (!mounted) return;
+
+      if (remainingSeconds <= 0) {
+        timer?.cancel();
+        return;
+      }
+
+      setState(() {
+        remainingSeconds--;
+      });
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final reservationList = context.watch<AuthProvider>().reservationList;
+
+    if (reservationList.isEmpty) {
+      if (reservationId != null || remainingSeconds != 0) {
+        timer?.cancel();
+        reservationId = null;
+        reservationEndAt = null;
+        remainingSeconds = 0;
+      }
+      return;
+    }
+
+    final newReservationId = reservationList.first['id']?.toString();
+    final newReservationEndAt = reservationList.first['endAt']?.toString();
+
+    if (reservationId != newReservationId ||
+        reservationEndAt != newReservationEndAt) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+
+        setState(() {
+          setReservationTimer();
+        });
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
+  String formatTime(String value) {
+    if (value.isEmpty) return '';
+
+    try {
+      final dateTime = DateTime.parse(value);
+
+      final hour = dateTime.hour.toString().padLeft(2, '0');
+      final minute = dateTime.minute.toString().padLeft(2, '0');
+
+      return '$hour:$minute';
+    } catch (e) {
+      return '';
+    }
+  }
+
+  String formatRemainTime(int seconds) {
+    if (seconds <= 0) return '00:00:00';
+
+    final hours = seconds ~/ 3600;
+    final minutes = (seconds % 3600) ~/ 60;
+    final remainSeconds = seconds % 60;
+
+    return '${hours.toString().padLeft(2, '0')}:'
+        '${minutes.toString().padLeft(2, '0')}:'
+        '${remainSeconds.toString().padLeft(2, '0')}';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +141,14 @@ class HomeBody extends StatelessWidget {
 
     final name = myInfo?['name']?.toString() ?? '사용자';
     final hasReservation = reservationList.isNotEmpty;
+
+    final reservation = hasReservation ? reservationList.first : null;
+
+    final spaceName = reservation?['spaceName']?.toString() ?? '';
+    final floor = reservation?['spaceFloor']?.toString() ?? '';
+    final seatLabel = reservation?['seatLabel']?.toString() ?? '';
+    final startAt = reservation?['startAt']?.toString() ?? '';
+    final endAt = reservation?['endAt']?.toString() ?? '';
 
     return SingleChildScrollView(
       child: Column(
@@ -57,8 +190,12 @@ class HomeBody extends StatelessWidget {
                       Container(
                         margin: const EdgeInsets.only(top: 20),
                         child: Text(
-                          "제1열람실 (3층) A-12",
-                          style: TextStyle(color: whiteColor),
+                          "$spaceName (${floor}층) $seatLabel",
+                          style: TextStyle(
+                            color: whiteColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
 
@@ -68,7 +205,7 @@ class HomeBody extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "09:00 - 13:00",
+                              "${formatTime(startAt)} ~ ${formatTime(endAt)}",
                               style: TextStyle(color: whiteColor),
                             ),
                             Text("남은시간", style: TextStyle(color: whiteColor)),
@@ -85,14 +222,17 @@ class HomeBody extends StatelessWidget {
                             filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                             child: Container(
                               alignment: Alignment.center,
-                              width: 70,
+                              width: 80,
                               height: 25,
                               decoration: BoxDecoration(
                                 color: Colors.white.withOpacity(0.2),
                               ),
                               child: Text(
-                                "02:15:30",
-                                style: TextStyle(color: whiteColor),
+                                formatRemainTime(remainingSeconds),
+                                style: TextStyle(
+                                  color: whiteColor,
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
                             ),
                           ),

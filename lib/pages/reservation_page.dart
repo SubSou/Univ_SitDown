@@ -92,12 +92,6 @@ class _ReservationPage extends State<ReservationPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              chevron_left(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-
               const SizedBox(height: 20),
 
               ReservationHeader(

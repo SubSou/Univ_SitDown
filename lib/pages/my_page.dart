@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sitdown/constants/app_colors.dart';
+import 'package:sitdown/providers/auth_provider.dart';
 import 'package:sitdown/widgets/mypage/my_header.dart';
 import 'package:sitdown/widgets/mypage/my_body.dart';
-import 'package:sitdown/providers/auth_provider.dart';
-import 'package:provider/provider.dart';
 
 class MyPage extends StatefulWidget {
   const MyPage({Key? key}) : super(key: key);
@@ -13,6 +13,24 @@ class MyPage extends StatefulWidget {
 }
 
 class _MyPageState extends State<MyPage> {
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    loadMyPageData();
+  }
+
+  Future<void> loadMyPageData() async {
+    await context.read<AuthProvider>().fetchMyInfo();
+
+    if (!mounted) return;
+
+    setState(() {
+      isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final myInfo = context.watch<AuthProvider>().myInfo;
@@ -22,15 +40,17 @@ class _MyPageState extends State<MyPage> {
     return Scaffold(
       backgroundColor: whiteColor,
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.all(16),
-          child: Column(
-            children: [
-              MyHeader(imageUrl: profileImageUrl),
-              MyBody(),
-            ],
-          ),
-        ),
+        child: isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    MyHeader(imageUrl: profileImageUrl),
+                    const MyBody(),
+                  ],
+                ),
+              ),
       ),
     );
   }

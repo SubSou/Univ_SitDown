@@ -49,4 +49,19 @@ class UserApi {
 
     return Map<String, dynamic>.from(data);
   }
+
+  /// 내 즐겨찾기 공간 목록 조회 USER-04
+  static Future<Map<String, dynamic>> getMyFavorites({
+    required String accessToken,
+    int page = 0,
+    int size = 20,
+  }) async {
+    final data = await ApiClient.get(
+      '/users/me/favorites',
+      accessToken: accessToken,
+      queryParameters: {'page': page, 'size': size},
+    );
+
+    return Map<String, dynamic>.from(data);
+  }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sitdown/constants/app_colors.dart';
 
 class NotificationItem extends StatelessWidget {
@@ -20,19 +19,33 @@ class NotificationItem extends StatelessWidget {
     required this.isRead,
   });
 
-  // 🔥 아이콘 경로 분기
-  String getIconPath() {
+  IconData getIcon() {
     switch (type) {
       case "success":
-        return "/icons/reservation_success.svg";
+        return Icons.event_available;
       case "notice":
-        return "/icons/megaphone.svg";
+        return Icons.campaign;
       case "cancel":
-        return "/icons/reservation_cancel.svg";
+        return Icons.event_busy;
       case "system":
-        return "/icons/system_notification.svg";
+        return Icons.settings;
       default:
-        return "/icons/system_notification.svg";
+        return Icons.notifications;
+    }
+  }
+
+  Color getIconColor() {
+    switch (type) {
+      case "success":
+        return primaryColor;
+      case "notice":
+        return Colors.orange;
+      case "cancel":
+        return Colors.redAccent;
+      case "system":
+        return Colors.grey;
+      default:
+        return Colors.grey;
     }
   }
 
@@ -40,15 +53,13 @@ class NotificationItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        print("클릭");
+        debugPrint("알림 클릭: $id");
       },
       child: Container(
         padding: const EdgeInsets.all(14),
-        margin: EdgeInsets.only(bottom: 10),
+        margin: const EdgeInsets.only(bottom: 10),
         decoration: BoxDecoration(
-          color: isRead
-              ? Colors.white
-              : primaryColor.withOpacity(0.05), // 🔥 읽음/안읽음
+          color: isRead ? Colors.white : primaryColor.withOpacity(0.05),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: isRead
@@ -59,12 +70,8 @@ class NotificationItem extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 🔥 SVG 아이콘
-            SvgPicture.asset(getIconPath(), width: 32, height: 32),
-
+            Icon(getIcon(), size: 32, color: getIconColor()),
             const SizedBox(width: 12),
-
-            // 🔥 텍스트 영역
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,6 +81,7 @@ class NotificationItem extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: isRead ? FontWeight.normal : FontWeight.bold,
+                      color: isRead ? Colors.grey.shade600 : Colors.black87,
                     ),
                   ),
                   const SizedBox(height: 4),

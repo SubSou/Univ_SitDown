@@ -72,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString().replaceAll('Exception: ', ''))),
+        SnackBar(content: Text("로그인 중 에러가 발생 했습니다. 잠시 후 다시 실행해 주세요.")),
       );
     } finally {
       if (mounted) {
@@ -147,28 +147,6 @@ class _LoginPageState extends State<LoginPage> {
                   ),
 
                   const SizedBox(height: 12),
-
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const FindPasswordPage(),
-                          ),
-                        );
-                      },
-                      child: const Text(
-                        '비밀번호 찾기',
-                        style: TextStyle(
-                          color: primaryColor,
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
 
                   const SizedBox(height: 28),
 

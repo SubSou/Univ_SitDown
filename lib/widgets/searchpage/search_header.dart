@@ -87,16 +87,20 @@ class _SearchHeader extends State<SearchHeader> {
         ),
         Container(
           margin: const EdgeInsets.only(top: 10),
-          child: CategoryList(
-            categoryList: categoryList,
-            selectedIndex: selectedIndex,
-            onTap: (index) {
-              setState(() {
-                selectedIndex = index;
-              });
+          width: double.infinity,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: CategoryList(
+              categoryList: categoryList,
+              selectedIndex: selectedIndex,
+              onTap: (index) {
+                setState(() {
+                  selectedIndex = index;
+                });
 
-              submitSearch();
-            },
+                submitSearch();
+              },
+            ),
           ),
         ),
       ],

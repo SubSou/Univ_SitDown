@@ -141,7 +141,7 @@ class _MyInfoBodyState extends State<MyInfoBody> {
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString().replaceAll("Exception: ", ""))),
+        SnackBar(content: Text("프로필 수정 중 에러가 발생 했습니다. 잠시 후 다시 실행해 주세요.")),
       );
     } finally {
       if (mounted) {
@@ -213,8 +213,8 @@ class _MyInfoBodyState extends State<MyInfoBody> {
           ),
 
           Container(
-            margin: const EdgeInsets.only(top: 20),
-            padding: const EdgeInsets.only(left: 100, right: 100),
+            margin: const EdgeInsets.only(top: 28),
+            padding: const EdgeInsets.symmetric(horizontal: 28),
             child: Column(
               children: [
                 MyInfoItem(mainTitle: "이름", controller: nameController),
@@ -223,15 +223,15 @@ class _MyInfoBodyState extends State<MyInfoBody> {
                 MyInfoItem(mainTitle: "소속", controller: affiliationController),
 
                 Container(
-                  margin: const EdgeInsets.only(top: 20),
+                  margin: const EdgeInsets.only(top: 24),
                   width: double.infinity,
-                  height: 50,
+                  height: 54,
                   child: Material(
                     color: isLoading ? greyColor : primaryColor,
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(12),
                     child: InkWell(
                       onTap: isLoading ? null : updateMyProfile,
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(12),
                       child: Center(
                         child: isLoading
                             ? const CircularProgressIndicator(
@@ -240,7 +240,11 @@ class _MyInfoBodyState extends State<MyInfoBody> {
                               )
                             : const Text(
                                 "수정하기",
-                                style: TextStyle(color: whiteColor),
+                                style: TextStyle(
+                                  color: whiteColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
                       ),
                     ),

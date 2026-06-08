@@ -118,6 +118,7 @@ class _ReservationItemState extends State<ReservationItem> {
 
     try {
       final reservationId = widget.item['id'].toString();
+      final authProvider = context.read<AuthProvider>();
 
       await RsvApi.extendReservation(
         accessToken: accessToken,
@@ -125,13 +126,21 @@ class _ReservationItemState extends State<ReservationItem> {
         additionalMinutes: 30,
       );
 
+      await RsvApi.extendReservation(
+        accessToken: accessToken,
+        reservationId: reservationId,
+        additionalMinutes: 30,
+      );
+
+      await authProvider.fetchMyReservations(status: 'ACTIVE');
+
       widget.onRefresh();
 
       if (!mounted) return;
 
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text('예약이 30분 연장되었습니다.')));
+      ).showSnackBar(const SnackBar(content: Text('예약이 연장되었습니다.')));
     } catch (e) {
       print('연장 실패 : $e');
 

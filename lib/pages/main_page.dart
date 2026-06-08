@@ -38,7 +38,7 @@ class _MainPageState extends State<MainPage> {
       case 2:
         return const ReservationPage();
       case 3:
-        return const NotificationPage();
+        return const MyPage();
       case 4:
         return const MyPage();
       default:
@@ -120,13 +120,6 @@ class _MainPageState extends State<MainPage> {
             activeIcon: Icon(Icons.calendar_month),
             label: '예약 내역',
           ),
-
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications_outlined),
-            activeIcon: Icon(Icons.notifications),
-            label: '알림',
-          ),
-
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outline),
             activeIcon: Icon(Icons.person),
